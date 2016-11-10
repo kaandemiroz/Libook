@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name" translatable="false">Libook</string>
+
+    <string name="title">Libook</string>
+    <string name="announce">Announce Free Table</string>
+    <string name="browse">Browse Free Tables</string>
+    <string name="floor">Floor</string>
+    <string name="duration">Duration</string>
+    <string name="favs">Favorites</string>
+    <string name="shake">Shake to pick a random favorite</string>
+    <string name="fav">Add to Favorites</string>
+    <string name="sym_hour">hr</string>
+    <string name="sym_minute">min</string>
+    <string name="complete_book">Announce</string>
+
+    <string name="default_table_id" translatable="false">0</string>
+    <string name="fav_1" translatable="false">fav1</string>
+    <string name="fav_2" translatable="false">fav2</string>
+    <string name="fav_3" translatable="false">fav3</string>
+    <string name="fav_4" translatable="false">fav4</string>
+    <string name="fav_5" translatable="false">fav5</string>
+    <string name="nofav">You have no favorite tables!</string>
+
+    <string name="title_activity_book">BookActivity</string>
+    <string name="header_book">Choose your table!</string>
+    <string name="title_activity_browse">BrowseActivity</string>
+    <string name="header_browse">Free Tables in the Library</string>
+
+    <string name="conSus">Connection Suspended</string>
+    <string name="expDate">Expiration Date: </string>
+    <string name="invCoords">Error: Invalid Coords</string>
+    <string name="invDuration">Invalid Duration</string>
+    <string name="outsideKU">You are outside Koç University!</string>
+    <string name="noLocation">Cannot retrieve location.</string>
+    <string name="uploadingStr">Uploading…</string>
+
+    <string name="photoTitle">Photo</string>
+    <string name="captureStr">Take</string>
+    <string name="chooseStr">Choose</string>
+    <string name="displayStr">Preview</string>
+
+    <string name="recordTitle">Audio Message</string>
+    <string name="recordStr">Record</string>
+    <string name="playRecStr">Play</string>
+    <string name="stopRecStr">Stop</string>
+
+    <string name="sit">Sit on the Table</string>
+    <string name="err">Error</string>
+    <string name="photo_del">Photo deleted.</string>
+    <string name="audio_del">Audio file deleted.</string>
+    <string name="delete">Delete</string>
+    <string name="title_activity_book_options">BookOptionsActivity</string>
+    <string name="title_activity_browse_options">BrowseOptionsActivity</string>
+    <string name="title_activity_preview">PreviewActivity</string>
+
+
+</resources>

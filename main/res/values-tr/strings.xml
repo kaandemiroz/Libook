@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="announce">Boş Masa Duyur</string>
+    <string name="browse">Boş Masa Ara</string>
+    <string name="floor">Kat</string>
+    <string name="duration">Süre</string>
+    <string name="title_activity_book">Tut Aktivite</string>
+    <string name="title_activity_browse">Ara Aktivite</string>
+    <string name="header_book">Masanızı seçin!</string>
+    <string name="header_browse">Kütüphanedeki Boş Masalar</string>
+    <string name="sym_hour">sa</string>
+    <string name="sym_minute">dk</string>
+    <string name="favs">Favorilerim </string>
+    <string name="complete_book">Duyur</string>
+    <string name="fav">Favorilerime Ekle</string>
+    <string name="nofav">Favori masanız yok!</string>
+    <string name="conSus">Bağlantı Durduruldu</string>
+    <string name="expDate">Bitiş Tarihi:</string>
+    <string name="invCoords">Geçersiz Koordinatlar</string>
+    <string name="noLocation">Konum bulunamadı.</string>
+    <string name="outsideKU">Koç Üniversitesi\'nin dışındasınız!</string>
+    <string name="invDuration">Geçersiz Süre</string>
+    <string name="recordStr">Kaydet</string>
+    <string name="recordTitle">Sesli Mesaj</string>
+    <string name="playRecStr">Oynat</string>
+    <string name="stopRecStr">Durdur</string>
+    <string name="captureStr">Çek</string>
+    <string name="chooseStr">Seç</string>
+    <string name="displayStr">Önizleme</string>
+    <string name="photoTitle">Fotoğraf</string>
+    <string name="uploadingStr">Yükleniyor…</string>
+    <string name="sit">Masaya otur</string>
+    <string name="shake">Rastgele bir favori seçmek için sallayın</string>
+    <string name="title">Libook</string>
+    <string name="err">Hata</string>
+    <string name="photo_del">Fotoğraf silindi.</string>
+    <string name="audio_del">Ses dosyası silindi.</string>
+    <string name="delete">Sil</string>
+    <string name="title_activity_book_options">TutSeçenekAktivite</string>
+    <string name="title_activity_browse_options">AraSeçenekAktivite</string>
+    <string name="title_activity_preview">ÖnizleAktivite</string>
+</resources>
