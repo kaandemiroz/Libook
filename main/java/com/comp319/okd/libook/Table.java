@@ -14,6 +14,9 @@ import java.util.Date;
 
 /**
  * Created by O. Kaan Demiröz on 21.4.2015.
+ *
+ * Parse-specific structure for the Table class.
+ * Handles getting and setting data for tables in Parse database.
  */
 @ParseClassName("Tables")
 public class Table  extends ParseObject{

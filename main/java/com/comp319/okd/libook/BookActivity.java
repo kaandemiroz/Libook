@@ -15,10 +15,7 @@ import android.widget.Toast;
 
 public class BookActivity extends Activity implements AdapterView.OnItemSelectedListener{
 
-
-
     Spinner floorSpinner;
-
     Integer[] floors = {-1, 0, 1, 2};
 
     @Override
@@ -26,20 +23,23 @@ public class BookActivity extends Activity implements AdapterView.OnItemSelected
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book);
 
-        Drawable lib, libland;
-        if(android.os.Build.VERSION.SDK_INT > 20) lib = getResources().getDrawable(R.drawable.lib,null);
-        else lib = getResources().getDrawable(R.drawable.lib);
+        Drawable lib, libLand;
+        // Display different background image for portrait and landscape
+        if(android.os.Build.VERSION.SDK_INT > 20){
+            lib = getResources().getDrawable(R.drawable.lib,null);
+            libLand = getResources().getDrawable(R.drawable.libland,null);
+        } else {
+            lib = getResources().getDrawable(R.drawable.lib);
+            libLand = getResources().getDrawable(R.drawable.libland);
+        }
         if(lib!=null)lib.setAlpha(60);
-        if(android.os.Build.VERSION.SDK_INT > 20) libland = getResources().getDrawable(R.drawable.libland,null);
-        else libland = getResources().getDrawable(R.drawable.libland);
-        if(libland!=null)libland.setAlpha(40);
+        if(libLand!=null)libLand.setAlpha(40);
 
+        // Create spinners to choose floor
         floorSpinner = (Spinner) findViewById(R.id.bookFloorSpinner);
-
         ArrayAdapter<Integer> fAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, floors);
         floorSpinner.setAdapter(fAdapter);
         floorSpinner.setSelection(1);
-
         floorSpinner.setOnItemSelectedListener(this);
     }
 
@@ -55,6 +55,7 @@ public class BookActivity extends Activity implements AdapterView.OnItemSelected
         //Do nothing
     }
 
+    // Create a pop-up activity to choose Booking Options
     public void showOptions(View view){
         LibraryBookView libraryBookView = (LibraryBookView) findViewById(R.id.libview);
         int x = libraryBookView.getClickedX();
@@ -74,14 +75,16 @@ public class BookActivity extends Activity implements AdapterView.OnItemSelected
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 4321){
-            if(resultCode==5312){
+            if(resultCode == 5312){
                 int floor = getIntent().getIntExtra("floor", (int)floorSpinner.getSelectedItem());
                 addToFavs(floor);
             }
         }
     }
 
+    // Add current table to favorites
     public void addToFavs(int floor) {
+        int modX = 10000, modY = 100;
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPreferences.edit();
         LibraryBookView libraryBookView = (LibraryBookView) findViewById(R.id.libview);
@@ -90,7 +93,7 @@ public class BookActivity extends Activity implements AdapterView.OnItemSelected
         int clickedY = libraryBookView.getClickedY();
 
         if (clickedX != -1 && clickedY != -1)
-            tableID = (floor+1) * 10000 + clickedX * 100 + clickedY;
+            tableID = (floor+1) * modX + clickedX * modY + clickedY;
         if (sharedPreferences.getInt(getString(R.string.fav_1), -1) == -1)
             editor.putInt(getString(R.string.fav_1), tableID);
         else if (sharedPreferences.getInt(getString(R.string.fav_2), -1) == -1)

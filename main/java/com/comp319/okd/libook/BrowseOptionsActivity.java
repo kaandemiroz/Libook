@@ -42,6 +42,7 @@ public class BrowseOptionsActivity extends Activity {
         }
     }
 
+    // Display uploaded photo
     public void display(View view){
         if(photoPath==null) return;
         Intent intent = new Intent(this, PreviewActivity.class);
@@ -49,6 +50,7 @@ public class BrowseOptionsActivity extends Activity {
         startActivity(intent);
     }
 
+    // Listen to uploaded audio message
     public void play(View view){
         if(audioPath==null) return;
         if(!playing){
@@ -73,6 +75,7 @@ public class BrowseOptionsActivity extends Activity {
         }
     }
 
+    // Choose to sit on the table
     public void sit(View view){
         setResult(RESULT_OK);
         finish();

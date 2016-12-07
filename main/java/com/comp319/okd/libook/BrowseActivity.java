@@ -23,8 +23,8 @@ import java.util.List;
 public class BrowseActivity extends Activity implements AdapterView.OnItemSelectedListener{
 
     Spinner floorSpinner;
-
     Integer[] floors = {-1,0,1,2};
+
     ArrayList<Table> tables = new ArrayList<>();
 
     public int tableIndex = -1;
@@ -36,20 +36,26 @@ public class BrowseActivity extends Activity implements AdapterView.OnItemSelect
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse);
 
-        Drawable lib, libland;
-        if(android.os.Build.VERSION.SDK_INT > 20) lib = getResources().getDrawable(R.drawable.lib,null);
-        else lib = getResources().getDrawable(R.drawable.lib);
+        Drawable lib, libLand;
+        // Display different background image for portrait and landscape
+        if(android.os.Build.VERSION.SDK_INT > 20){
+            lib = getResources().getDrawable(R.drawable.lib,null);
+            libLand = getResources().getDrawable(R.drawable.libland,null);
+        } else {
+            lib = getResources().getDrawable(R.drawable.lib);
+            libLand = getResources().getDrawable(R.drawable.libland);
+        }
         if(lib!=null)lib.setAlpha(60);
-        if(android.os.Build.VERSION.SDK_INT > 20) libland = getResources().getDrawable(R.drawable.libland,null);
-        else libland = getResources().getDrawable(R.drawable.libland);
-        if(libland!=null)libland.setAlpha(40);
-        floorSpinner = (Spinner) findViewById(R.id.browseFloorSpinner);
+        if(libLand!=null)libLand.setAlpha(40);
 
+        // Create spinners to choose floor
+        floorSpinner = (Spinner) findViewById(R.id.browseFloorSpinner);
         ArrayAdapter<Integer> fAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,floors);
         floorSpinner.setAdapter(fAdapter);
         floorSpinner.setSelection(1);
         floorSpinner.setOnItemSelectedListener(this);
 
+        // Check Parse database for free tables
         ParseQuery<Table> query = new ParseQuery<>("Tables");
         query.findInBackground(new FindCallback<Table>() {
             @Override
@@ -68,6 +74,7 @@ public class BrowseActivity extends Activity implements AdapterView.OnItemSelect
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // Change current floor
         LibraryBrowseView libraryBrowseView = (LibraryBrowseView) findViewById(R.id.libview2);
         libraryBrowseView.setFloor(position-1);
     }
@@ -77,6 +84,7 @@ public class BrowseActivity extends Activity implements AdapterView.OnItemSelect
 
     }
 
+    // Display additional media messages for the table, plus the option to sit
     public void showOptions(){
         Intent intent = new Intent(this,BrowseOptionsActivity.class);
         if(photoFile!=null)intent.putExtra("photoPath",photoFile.getAbsolutePath());
@@ -86,6 +94,7 @@ public class BrowseActivity extends Activity implements AdapterView.OnItemSelect
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Sitting on the table, delete entry
         if(requestCode == 1234){
             if(resultCode == RESULT_OK){
                 deleteTable();
@@ -93,6 +102,7 @@ public class BrowseActivity extends Activity implements AdapterView.OnItemSelect
         }
     }
 
+    // Remove table from the list
     public void deleteTable(){
         if(tableIndex==-1)return;
         Table table = tables.get(tableIndex);

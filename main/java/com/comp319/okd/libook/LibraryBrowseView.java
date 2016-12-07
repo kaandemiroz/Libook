@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 /**
  * Created by O. Kaan Demiröz on 22.4.2015.
+ * Top-down view of the library where the user can see the current free tables
+ * and interact with them, such as previewing the messages and choosing to sit
  */
 public class LibraryBrowseView extends LibraryView{
 
@@ -33,11 +35,13 @@ public class LibraryBrowseView extends LibraryView{
         super(context, attrs, defStyleAttr);
     }
 
+    // Initialize view
     public void init(ArrayList<Table> tables){
         this.tables = tables;
         update();
     }
 
+    // Update current floor
     private void update(){
         removeAllViews();
         int count = 0;
@@ -45,14 +49,16 @@ public class LibraryBrowseView extends LibraryView{
 
         for(int i=0; i<tables.size(); i++){
             Table table = tables.get(i);
-            if(getFloor()!=table.getFloor())continue;
-            bookImage = (ImageView) inflater.inflate(R.layout.bookimage,null);
-            RelativeLayout.LayoutParams params = new LayoutParams(imageSize,imageSize);
-            params.topMargin = (int)(table.getY()*12.5*scale);
-            params.leftMargin = (int)(table.getX()*12.5*scale);
-            books[count] = bookImage;
-            count++;
-            addView(bookImage,params);
+            // Show tables on the current floor
+            if(getFloor() == table.getFloor()){
+                bookImage = (ImageView) inflater.inflate(R.layout.bookimage,null);
+                RelativeLayout.LayoutParams params = new LayoutParams(imageSize,imageSize);
+                params.topMargin = (int)(table.getY()*scale*density);
+                params.leftMargin = (int)(table.getX()*scale*density);
+                books[count] = bookImage;
+                count++;
+                addView(bookImage,params);
+            }
         }
     }
 
@@ -60,15 +66,17 @@ public class LibraryBrowseView extends LibraryView{
     public boolean onTouchEvent(@NonNull MotionEvent event) {
         if(tables == null) return false;
         int action = event.getAction();
-        x = (int)(event.getX()/scale/12.5);
-        y = (int)(event.getY()/scale/12.5);
+        x = (int)(event.getX()/density/scale);
+        y = (int)(event.getY()/density/scale);
         //x and y are the coordinates of the touched location
 
-        if(action==MotionEvent.ACTION_DOWN){
+        if(action == MotionEvent.ACTION_DOWN){
             //If the touch was a down press
             BrowseActivity browseActivity = (BrowseActivity) getContext();
             browseActivity.photoFile = null;
             browseActivity.audioFile = null;
+
+            // Find the table that we pressed on
             for(int i=0; i<tables.size(); i++){
                 Table table = tables.get(i);
                 int difX = table.getX() - x;
@@ -79,11 +87,13 @@ public class LibraryBrowseView extends LibraryView{
                     File audioFile = table.getAudio();
                     if(photoFile!=null)browseActivity.photoFile = photoFile;
                     if(audioFile!=null)browseActivity.audioFile = audioFile;
+                    // Display messages on new pop-up activity
                     browseActivity.showOptions();
                     break;
                 }
             }
 
+            // Debug toast
             final Toast toast = Toast.makeText(getContext(),"X: " + x + ", Y: " + y,Toast.LENGTH_SHORT);
             toast.show();
             Handler handler = new Handler();
@@ -99,6 +109,7 @@ public class LibraryBrowseView extends LibraryView{
 
     @Override
     public void setFloor(int floor){
+        // Change displayed floor
         super.setFloor(floor);
         if(tables!=null)update();
     }

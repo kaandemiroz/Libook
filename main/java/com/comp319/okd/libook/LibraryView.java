@@ -7,16 +7,18 @@ import android.widget.RelativeLayout;
 
 /**
  * Created by O. Kaan Demiröz on 22.4.2015.
+ * Superclass for a layout that shows the top-down view of the library
  */
 public abstract class LibraryView extends RelativeLayout{
 
-    final float scale = getResources().getDisplayMetrics().density;
+    final float scale = 12.5f;
+    final float density = getResources().getDisplayMetrics().density;
     ImageView bookImage;
     protected int imageSize;
     protected int floor;
     protected int drawableID;
-    protected int x=-1;
-    protected int y=-1;
+    protected int x = -1;
+    protected int y = -1;
 
     public LibraryView(Context context) {
         super(context);
@@ -34,7 +36,7 @@ public abstract class LibraryView extends RelativeLayout{
     }
 
     private void init(){
-        imageSize = (int) (12.5*scale);
+        imageSize = (int) (scale * density);
     }
 
     public int getClickedX(){

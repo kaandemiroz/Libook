@@ -56,9 +56,11 @@ public class BookOptionsActivity extends FragmentActivity  implements
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
 
+    // Location must be inside Koc University to book a table
+    // To test, long = 29.07, lat = 41.20 can be used in emulator
     private static double kuLongitudeMin = 29.065349;
-    private static double kuLatitudeMin = 41.196161;
     private static double kuLongitudeMax = 29.080198;
+    private static double kuLatitudeMin = 41.196161;
     private static double kuLatitudeMax = 41.210562;
 
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
@@ -66,9 +68,8 @@ public class BookOptionsActivity extends FragmentActivity  implements
 
     private MediaRecorder mediaRecorder = null;
     private MediaPlayer mediaPlayer = null;
-    private boolean recording = false;
+    private boolean recording = false, recorded = false;
     private boolean playing = false;
-    private boolean recorded = false;
     private boolean captured = false;
     protected String outputFile = null;
     protected int floor = -2;
@@ -84,11 +85,14 @@ public class BookOptionsActivity extends FragmentActivity  implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Create a window with no title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_book_options);
         buildGoogleApiClient();
         if(!checkCameraHardware(getApplicationContext())) findViewById(R.id.camera_layout).setVisibility(View.GONE);
 
+        // Create spinners to choose time data
         hourSpinner = (Spinner) this.findViewById(R.id.hourSpinner);
         minuteSpinner = (Spinner) this.findViewById(R.id.minuteSpinner);
 
@@ -108,7 +112,10 @@ public class BookOptionsActivity extends FragmentActivity  implements
         mGoogleApiClient.connect();
     }
 
+    // Complete transaction, uploading all data to Parse
     public void completeBooking(View view) {
+
+        // Location data
         getLocationUpdate();
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         for(int i=0; mLastLocation == null; i++){
@@ -127,6 +134,7 @@ public class BookOptionsActivity extends FragmentActivity  implements
             return;
         }
 
+        // Time data
         int hour = (int) hourSpinner.getSelectedItem();
         int minute = (int) minuteSpinner.getSelectedItem();
         if (hour == 0 && minute == 0) {
@@ -146,6 +154,7 @@ public class BookOptionsActivity extends FragmentActivity  implements
         date.add(Calendar.HOUR, 2);
         Toast.makeText(getApplicationContext(), getString(R.string.expDate) + date.getTime(), Toast.LENGTH_SHORT).show();
 
+        // Media data
         File audio = null;
         File photo = null;
         if(outputFile!= null) audio = new File(outputFile);
@@ -156,6 +165,8 @@ public class BookOptionsActivity extends FragmentActivity  implements
         if(audio != null && audio.exists())table.setAudio(audio);
         if(photo != null && photo.exists())table.setPhoto(photo);
         table.setExpiresAt(expiresAt);
+
+        // Upload to Parse
         final TextView uploadingText = (TextView) findViewById(R.id.uploading);
         uploadingText.setVisibility(View.VISIBLE);
         table.saveInBackground(new SaveCallback() {
@@ -178,6 +189,7 @@ public class BookOptionsActivity extends FragmentActivity  implements
         //Do nothing
     }
 
+    // Capture a photo to attach
     public void capture(View view){
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -189,6 +201,7 @@ public class BookOptionsActivity extends FragmentActivity  implements
         startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
+    // Preview the captured photo
     public void display(View view){
         if(!captured)return;
         Intent intent = new Intent(this, PreviewActivity.class);
@@ -196,6 +209,7 @@ public class BookOptionsActivity extends FragmentActivity  implements
         startActivity(intent);
     }
 
+    // Delete a captured photo
     public void deletePhoto(View view){
         if(!captured)return;
         if(new File(fileUri.getPath()).delete()){
@@ -205,6 +219,7 @@ public class BookOptionsActivity extends FragmentActivity  implements
         }else Toast.makeText(getApplicationContext(),getString(R.string.err), Toast.LENGTH_SHORT).show();
     }
 
+    // Record an audio message
     public void record(View view){
         if(!recording){
             outputFile = getFilesDir().getAbsolutePath() + "/audio_message.3gpp";
@@ -235,6 +250,7 @@ public class BookOptionsActivity extends FragmentActivity  implements
         }
     }
 
+    // Preview the recorded audio message
     public void play(View view){
         if(!recorded)return;
         if(!playing){
@@ -258,6 +274,7 @@ public class BookOptionsActivity extends FragmentActivity  implements
         }
     }
 
+    // Delete the recorded audio message
     public void deleteAudio(View view){
         if(!recorded)return;
         if(new File(outputFile).delete()){
@@ -267,7 +284,7 @@ public class BookOptionsActivity extends FragmentActivity  implements
         }else Toast.makeText(getApplicationContext(),getString(R.string.err), Toast.LENGTH_SHORT).show();
     }
 
-    /* Check if this device has a camera */
+    // Check if this device has a camera
     private boolean checkCameraHardware(Context context) {
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
     }
@@ -308,7 +325,7 @@ public class BookOptionsActivity extends FragmentActivity  implements
 
     @Override
     public void onConnected(Bundle bundle) {
-
+        // Do nothing
     }
 
     @Override
